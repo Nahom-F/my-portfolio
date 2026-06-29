@@ -207,13 +207,13 @@
   
   .hero-title {
     font-family: 'Syne', sans-serif; 
-    font-size: clamp(2rem, 5vw, 5.5rem); /* Scaled down slightly so it fits beautifully on desktop */
+    font-size: clamp(2rem, 5vw, 5.5rem); 
     font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 1.5rem;
   }
   .hero-title .line { display: block; overflow: hidden; }
   .hero-title .line span { 
     display: block; 
-    white-space: nowrap; /* Strictly prevents the text from wrapping and slicing horizontally */
+    white-space: nowrap; 
     animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) both; 
   }
   .hero-title .line:nth-child(1) span { animation-delay: 0.1s; }
@@ -420,6 +420,7 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="./work/">Recent Works</a></li>
     <li><a href="#contact">Hire Me</a></li>
   </ul>
 </nav>
@@ -519,13 +520,13 @@
     <div class="project-card">
       <div class="project-num">01</div>
       <div class="project-tags">
+        <span class="project-tag">React</span>
         <span class="project-tag">Next.js</span>
-        <span class="project-tag">Stripe</span>
-        <span class="project-tag">SaaS</span>
+        <span class="project-tag">UI/UX</span>
       </div>
-      <div class="project-name">Subscription Platform</div>
-      <div class="project-desc">Full-stack SaaS app with auth, billing, and a customer dashboard. Production-ready concept featuring a clean customer dashboard, seamless UI states, and responsive data layouts.</div>
-      <a href="#" class="project-link">View Project <span class="arrow">→</span></a>
+      <div class="project-name">Gamified Calisthenics App</div>
+      <div class="project-desc">A mobile-first web app transforming strength training through live state-tracking, gamified global leaderboards, and virtual rewards.</div>
+      <a href="./work/" class="project-link">View Case Study <span class="arrow">→</span></a>
     </div>
     <div class="project-card">
       <div class="project-num">02</div>
