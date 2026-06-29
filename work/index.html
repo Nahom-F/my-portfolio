@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Gamified Calisthenics App</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  /* Base styles inherited from main portfolio */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    var(--bg-solid): #0a0a0a;
+    --bg: rgba(10, 10, 10, 0.65);
+    --bg2: rgba(17, 17, 17, 0.68);
+    --border: rgba(255,255,255,0.07);
+    --accent: #b5ff4d;
+    --text: #f0f0f0;
+    --muted: #666;
+    --muted2: #999;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: #0a0a0a; color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; }
+  
+  /* Navigation */
+  nav { padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .back-btn { color: var(--muted2); text-decoration: none; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .back-btn:hover { color: var(--accent); }
+
+  /* Case Study Header */
+  .case-header { padding: 6rem 4rem 4rem; text-align: center; border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .case-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+  .case-tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 2rem; }
+  .case-tag { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border: 1px solid var(--border); color: var(--accent); background: rgba(181,255,77,0.05); border-radius: 100px; }
+
+  /* Media Container */
+  .media-showcase { padding: 4rem; max-width: 1200px; margin: 0 auto; }
+  .video-container { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 6rem; background: #000; }
+  .video-container video { width: 100%; display: block; }
+  
+  /* Feature Grid */
+  .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 6rem; }
+  .feature-row:nth-child(even) .feature-text { order: 2; }
+  .feature-row:nth-child(even) .feature-img { order: 1; }
+  .feature-img img { width: 100%; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .feature-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+  .feature-desc { color: var(--muted2); line-height: 1.8; font-size: 14px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .case-header, .media-showcase { padding: 3rem 1.5rem; }
+    .feature-row { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 4rem; }
+    .feature-row:nth-child(even) .feature-text, .feature-row:nth-child(even) .feature-img { order: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">dev<span>.</span>folio</a>
+  <a href="../index.html" class="back-btn">← Back to Home</a>
+</nav>
+
+<header class="case-header">
+  <div class="case-tags">
+    <span class="case-tag">React</span>
+    <span class="case-tag">Next.js</span>
+    <span class="case-tag">State Management</span>
+  </div>
+  <h1 class="case-title">SteelPhoenix Calisthenics Tracker</h1>
+  <p style="color: var(--muted2); max-width: 600px; margin: 0 auto;">A mobile-first web application designed to track bodyweight strength progression. Blending high-intensity fitness tracking with deep gamification elements, real-time state management, and a dynamic rewards ecosystem.</p>
+</header>
+
+<section class="media-showcase">
+  <!-- Main App Video -->
+  <div class="video-container">
+    <video autoplay loop muted playsinline controls>
+      <source src="assets/Screen Recording 2026-06-29 143644_2.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Feature 1 -->
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3 class="feature-title">Dynamic Dashboard</h3>
+      <p class="feature-desc">Built a responsive command center that tracks daily caloric and time targets. It utilizes interactive progress rings and streak logic to keep users engaged and informed at a glance.</p>
+    </div>
+    <div class="feature-img">
+      <img src="assets/welcome.png" alt="App Dashboard">
+    </div>
+  </div>
+
+  <!-- Feature 2 -->
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3 class="feature-title">Complex Component Rendering</h3>
+      <p class="feature-desc">Engineered a detailed workout matrix with nested data mapping. Features include dynamic form check instructions and real-time set logging that updates user statistics instantly.</p>
+    </div>
+    <div class="feature-img">
+      <img src="assets/workout.png" alt="Workout Matrix">
+    </div>
+  </div>
+
+  <!-- Feature 3 -->
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3 class="feature-title">Gamified Leaderboards</h3>
+      <p class="feature-desc">Designed a "Global Arena" ranking system that calculates user power, time, and discipline metrics to generate live competitive standings.</p>
+    </div>
+    <div class="feature-img">
+      <img src="assets/rank.png" alt="Global Arena Leaderboard">
+    </div>
+  </div>
+
+  <!-- Feature 4 -->
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3 class="feature-title">Virtual Economy & State Management</h3>
+      <p class="feature-desc">The Armory Store allows users to trade earned in-app currency for custom visual upgrades. Building this required complex React state management to ensure user balances and equipped items synced flawlessly across different views.</p>
+    </div>
+    <div class="feature-img">
+      <img src="assets/shop.png" alt="Armory Store">
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
