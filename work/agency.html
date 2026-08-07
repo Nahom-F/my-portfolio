@@ -9,11 +9,11 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg-solid: #050505;
-    --accent: #b5ff4d;
-    --accent2: #00e5ff;
+    --bg-solid: #030a14;
     --text: #f0f0f0;
-    --muted: #888;
+    --accent-blue: #4d9fff;
+    --neon-blue: #2a81ff;
+    --accent-green: #a8ff53;
   }
 
   body {
@@ -26,20 +26,11 @@
     align-items: center;
     overflow: hidden;
     position: relative;
+    /* Soft deep space background */
+    background: radial-gradient(circle at center, #061122 0%, #02050a 100%);
   }
 
-  /* --- Background Grid --- */
-  .grid-overlay {
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 50px 50px;
-    z-index: 0;
-  }
-
-  /* --- ORBITAL SYSTEM --- */
+  /* --- ORBITAL SYSTEM CONTAINER --- */
   .orbital-system {
     position: absolute;
     top: 50%;
@@ -52,195 +43,216 @@
     pointer-events: none;
   }
 
-  .orbit {
+  /* =========================================
+     LAYER 3: OUTER DOTTED GLOBE (images (3).jpg)
+     ========================================= */
+  .layer-3-globe {
     position: absolute;
+    width: 800px;
+    height: 800px;
     border-radius: 50%;
+    /* Creates the dot grid */
+    background-image: radial-gradient(circle, rgba(77, 159, 255, 0.6) 2px, transparent 2.5px);
+    background-size: 35px 35px;
+    background-position: center;
+    /* Inset shadow creates the 3D sphere illusion by darkening the edges */
+    box-shadow: inset 0 0 150px 100px var(--bg-solid), inset 0 0 50px 20px rgba(0,0,0,0.8);
+    animation: spinGlobe 60s linear infinite;
+    opacity: 0.5;
   }
 
-  /* Layer 1: The Core Ball with hovering particles */
-  .layer-1-core {
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
-    box-shadow: inset 0 0 40px rgba(0, 229, 255, 0.05);
-    animation: pulseCore 4s ease-in-out infinite alternate;
-  }
-  .core-particle {
+  /* Floating yellow/green satellite nodes mimicking the reference */
+  .globe-node {
     position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--accent-green);
     border-radius: 50%;
-    background: var(--accent2);
-    box-shadow: 0 0 10px var(--accent2);
+    box-shadow: 0 0 10px var(--accent-green);
   }
-  .cp-1 { width: 6px; height: 6px; top: 40%; left: 30%; animation: float 3s ease-in-out infinite alternate; }
-  .cp-2 { width: 4px; height: 4px; top: 60%; left: 60%; animation: float 4s ease-in-out infinite alternate-reverse; }
-  .cp-3 { width: 8px; height: 8px; top: 35%; left: 65%; animation: float 2.5s ease-in-out infinite alternate; opacity: 0.6; }
+  .gn-1 { top: 15%; left: 20%; animation: floatNode 4s ease-in-out infinite alternate; }
+  .gn-2 { top: 80%; left: 70%; animation: floatNode 5s ease-in-out infinite alternate-reverse; }
+  .gn-3 { top: 30%; right: 10%; width: 4px; height: 4px; background: var(--accent-blue); animation: floatNode 3s ease-in-out infinite alternate; }
 
-  /* Layer 2: Tracking lines following each other */
-  .layer-2-lines {
-    width: 450px;
-    height: 450px;
-    animation: spinRight 20s linear infinite;
+  /* =========================================
+     LAYER 2: DOTTED SWIRL (images (2).jpg)
+     ========================================= */
+  .layer-2-swirl {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    animation: spinSwirl 25s linear infinite;
   }
-  .layer-2-lines svg {
+  
+  /* Using SVG to perfectly recreate the dotted halftone spiral */
+  .layer-2-swirl svg {
     width: 100%;
     height: 100%;
     overflow: visible;
   }
-  .layer-2-lines circle {
+  .layer-2-swirl circle {
     fill: none;
-    stroke: var(--accent);
-    stroke-width: 2;
-    /* Asymmetrical dashes create the "following" effect */
-    stroke-dasharray: 4 8 20 10 50 15 8 12;
-    opacity: 0.6;
+    stroke: #ffffff;
+    stroke-linecap: round;
   }
+  /* Swirl Arm 1 */
+  .swirl-1 { stroke-width: 6; stroke-dasharray: 0 18; stroke-dashoffset: 0; opacity: 0.9; }
+  .swirl-2 { stroke-width: 5; stroke-dasharray: 0 16; stroke-dashoffset: -20; opacity: 0.7; }
+  .swirl-3 { stroke-width: 4; stroke-dasharray: 0 14; stroke-dashoffset: -40; opacity: 0.5; }
+  .swirl-4 { stroke-width: 2.5; stroke-dasharray: 0 12; stroke-dashoffset: -60; opacity: 0.3; }
 
-  /* Layer 3: Thin, smooth hovering circle */
-  .layer-3-ring {
-    width: 650px;
-    height: 650px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
-    animation: spinLeft 35s linear infinite;
-  }
-
-  /* Layer 4: Large outer orbit with different sized balls */
-  .layer-4-outer {
-    width: 900px;
-    height: 900px;
-    border: 1px solid rgba(0, 229, 255, 0.1);
-    animation: spinRight 45s linear infinite;
-  }
-  
-  /* Planets/Balls attached to Layer 4 */
-  .planet {
+  /* =========================================
+     LAYER 1: GLOWING ATOM (images.jpg)
+     ========================================= */
+  .layer-1-atom {
     position: absolute;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    animation: floatAtom 6s ease-in-out infinite;
+  }
+
+  /* The central metallic core */
+  .atom-core {
+    position: absolute;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-  }
-  
-  /* Large dark ball */
-  .planet-1 {
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle at 30% 30%, #222, #000);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    top: -30px; /* Sits perfectly on the top edge */
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
-  }
-  
-  /* Small bright glowing ball */
-  .planet-2 {
-    width: 16px;
-    height: 16px;
-    background: var(--accent);
-    box-shadow: 0 0 20px var(--accent);
-    top: 50%;
-    right: -8px; /* Sits perfectly on the right edge */
-    transform: translateY(-50%);
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #b3d4ff 20%, #2a81ff 60%, #001f4d 100%);
+    box-shadow: 0 0 40px rgba(42, 129, 255, 0.6), inset -10px -10px 20px rgba(0,0,0,0.5);
+    z-index: 5;
   }
 
-  /* Medium hollow circle */
-  .planet-3 {
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: 2px solid var(--accent2);
-    bottom: -15px; /* Sits perfectly on the bottom edge */
-    left: 50%;
-    transform: translateX(-50%);
+  /* The thick glowing neon orbital rings */
+  .atom-ring {
+    position: absolute;
+    width: 280px;
+    height: 120px;
+    border: 5px solid rgba(120, 185, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 
+      0 0 20px var(--neon-blue), 
+      inset 0 0 20px var(--neon-blue),
+      0 0 5px #fff,
+      inset 0 0 5px #fff;
+  }
+  
+  /* Rotating the rings in 3D space */
+  .ring-1 {
+    transform: rotateZ(45deg) rotateX(70deg);
+    animation: spinRing1 12s linear infinite;
+  }
+  .ring-2 {
+    transform: rotateZ(-45deg) rotateX(70deg);
+    animation: spinRing2 12s linear infinite reverse;
   }
 
-  /* Tiny distant dot */
-  .planet-4 {
-    width: 6px;
-    height: 6px;
+  /* Thin outer boundary ring for the atom */
+  .atom-outer-boundary {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border: 1px solid rgba(77, 159, 255, 0.3);
+    border-radius: 50%;
+    animation: spinGlobe 20s linear infinite;
+  }
+
+  /* Electrons on the rings */
+  .electron {
+    position: absolute;
+    width: 12px;
+    height: 12px;
     background: #fff;
-    box-shadow: 0 0 8px #fff;
-    top: 20%;
-    left: 4%;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #fff, 0 0 30px var(--neon-blue);
   }
+  .e-1 { top: -6px; left: 50%; transform: translateX(-50%); }
+  .e-2 { bottom: -6px; left: 50%; transform: translateX(-50%); }
 
-  /* Animations */
-  @keyframes spinRight { 100% { transform: rotate(360deg); } }
-  @keyframes spinLeft { 100% { transform: rotate(-360deg); } }
-  @keyframes pulseCore { 
-    0% { transform: scale(0.9); opacity: 0.7; } 
-    100% { transform: scale(1.1); opacity: 1; } 
-  }
-  @keyframes float {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(15px, -15px); }
-  }
+  /* --- ANIMATIONS --- */
+  @keyframes spinGlobe { 100% { transform: rotate(360deg); } }
+  @keyframes spinSwirl { 100% { transform: rotate(-360deg); } }
+  @keyframes floatAtom { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  @keyframes floatNode { 0% { transform: translate(0,0); } 100% { transform: translate(20px, -20px); } }
+  @keyframes spinRing1 { 100% { transform: rotateZ(45deg) rotateX(70deg) rotateZ(360deg); } }
+  @keyframes spinRing2 { 100% { transform: rotateZ(-45deg) rotateX(70deg) rotateZ(360deg); } }
 
-  /* --- TEXT CONTENT (No Box) --- */
+
+  /* --- TEXT CONTENT (Transparent & readable) --- */
   .content-wrapper {
     position: relative;
     z-index: 10;
     text-align: center;
     max-width: 600px;
     padding: 20px;
-    /* Heavy text shadow ensures readability against the glowing lines passing behind */
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 2px 5px rgba(0,0,0,0.8);
+    /* Heavy, deep shadows to separate text from the bright glowing atom directly behind it */
+    text-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.9), 
+      0 0 40px rgba(0, 0, 0, 0.9),
+      0 2px 4px rgba(0, 0, 0, 1);
   }
 
   .tag {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(0, 229, 255, 0.08);
-    border: 1px solid rgba(0, 229, 255, 0.2);
+    background: rgba(42, 129, 255, 0.1);
+    border: 1px solid rgba(42, 129, 255, 0.3);
     border-radius: 100px;
     padding: 6px 16px;
     font-size: 11px;
-    color: var(--accent2);
+    color: var(--accent-blue);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 2rem;
-    backdrop-filter: blur(4px); /* Slight blur just for the pill */
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   }
 
   .tag::before {
     content: '';
     width: 6px;
     height: 6px;
-    background: var(--accent2);
+    background: var(--accent-blue);
     border-radius: 50%;
     animation: pulseTag 2s infinite;
   }
 
   @keyframes pulseTag {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px var(--accent-blue); }
+    50% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0px var(--accent-blue); }
   }
 
   .title {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-size: clamp(3rem, 6vw, 5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
+    color: #ffffff;
   }
 
   .title span {
-    color: var(--accent);
+    color: var(--accent-blue);
   }
 
   .description {
-    color: #e0e0e0;
+    color: #e0e6ed;
     font-size: 15px;
     line-height: 1.8;
     margin-bottom: 2.5rem;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--text);
+    color: #ffffff;
     font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -251,9 +263,9 @@
   }
 
   .back-link:hover {
-    color: var(--accent);
+    color: var(--accent-blue);
     gap: 14px;
-    border-bottom: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent-blue);
   }
 
   .back-link .arrow {
@@ -268,40 +280,58 @@
 </head>
 <body>
 
-  <!-- Background Grid -->
-  <div class="grid-overlay"></div>
-
-  <!-- The 4-Layer Orbital System -->
+  <!-- The 3-Layer Orbital System based on provided images -->
   <div class="orbital-system">
     
-    <!-- Layer 4: Outer track with planets -->
-    <div class="orbit layer-4-outer">
-      <div class="planet planet-1"></div>
-      <div class="planet planet-2"></div>
-      <div class="planet planet-3"></div>
-      <div class="planet planet-4"></div>
+    <!-- Layer 3: Outer Dotted Globe (images (3).jpg) -->
+    <div class="layer-3-globe">
+      <div class="globe-node gn-1"></div>
+      <div class="globe-node gn-2"></div>
+      <div class="globe-node gn-3"></div>
     </div>
 
-    <!-- Layer 3: Thin solid ring -->
-    <div class="orbit layer-3-ring"></div>
-
-    <!-- Layer 2: Following/dashed tracking lines (using SVG for perfect styling) -->
-    <div class="orbit layer-2-lines">
-      <svg viewBox="0 0 450 450">
-        <circle cx="225" cy="225" r="224"></circle>
+    <!-- Layer 2: Halftone Dotted Swirl (images (2).jpg) -->
+    <div class="layer-2-swirl">
+      <svg viewBox="0 0 500 500">
+        <!-- Dual Spirals created using dashed offset circles clipped conceptually by the design -->
+        <g transform="translate(250, 250)">
+          <!-- Arm 1 -->
+          <circle r="180" class="swirl-1" stroke-dashoffset="100"></circle>
+          <circle r="150" class="swirl-2" stroke-dashoffset="80"></circle>
+          <circle r="120" class="swirl-3" stroke-dashoffset="60"></circle>
+          <circle r="90" class="swirl-4" stroke-dashoffset="40"></circle>
+          
+          <!-- Arm 2 (Rotated 180deg to complete the double helix/swirl look) -->
+          <g transform="rotate(180)">
+            <circle r="180" class="swirl-1" stroke-dashoffset="100"></circle>
+            <circle r="150" class="swirl-2" stroke-dashoffset="80"></circle>
+            <circle r="120" class="swirl-3" stroke-dashoffset="60"></circle>
+            <circle r="90" class="swirl-4" stroke-dashoffset="40"></circle>
+          </g>
+        </g>
       </svg>
     </div>
 
-    <!-- Layer 1: Core Ball with hovering stuff inside -->
-    <div class="orbit layer-1-core">
-      <div class="core-particle cp-1"></div>
-      <div class="core-particle cp-2"></div>
-      <div class="core-particle cp-3"></div>
+    <!-- Layer 1: Glowing Atom Core (images.jpg) -->
+    <div class="layer-1-atom">
+      <!-- Thin outer bounding line from reference -->
+      <div class="atom-outer-boundary"></div>
+      
+      <!-- Glowing neon rings with electrons -->
+      <div class="atom-ring ring-1">
+        <div class="electron e-1"></div>
+      </div>
+      <div class="atom-ring ring-2">
+        <div class="electron e-2"></div>
+      </div>
+      
+      <!-- Central metallic sphere -->
+      <div class="atom-core"></div>
     </div>
 
   </div>
 
-  <!-- Main Content (Now completely transparent & centered inside the orbits) -->
+  <!-- Transparent Hovering Text Content -->
   <div class="content-wrapper">
     <div class="tag">Agency Website</div>
     <h1 class="title">Under<br><span>Production</span></h1>
